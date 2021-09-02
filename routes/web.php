@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\UploadController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
