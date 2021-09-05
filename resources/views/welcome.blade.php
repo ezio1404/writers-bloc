@@ -20,9 +20,9 @@
 
     <div class="min-h-screen flex items-center justify-center">
         <div class="flex flex-col justify-around h-full">
-            index
+            Deploy Test
 
-            updated index
+
         </div>
     </div>
 </div>
