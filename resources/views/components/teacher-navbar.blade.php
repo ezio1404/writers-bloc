@@ -36,52 +36,54 @@
             </a>
         </li>
         <div class="border border-red-500">
-            <li class="text-red-500 font-bold">
-                backlog:
-                my profile, settings, change password
-            </li>
-            <li >
-                <a href="#"
-                    class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 @if(Request::path() === 'teacher/profile') bg-gray-200 font-bold @else focus:bg-gray-200 @endif focus:shadow-outline">
-                    <span class="text-gray-600">
-                        <svg class="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                    </span>
-                    <span>My profile</span>
-                </a>
-            </li>
+            <ul>
+                <li class="text-red-500 font-bold">
+                    backlog:
+                    my profile, settings, change password
+                </li>
+                <li >
+                    <a href="#"
+                        class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 @if(Request::path() === 'teacher/profile') bg-gray-200 font-bold @else focus:bg-gray-200 @endif focus:shadow-outline">
+                        <span class="text-gray-600">
+                            <svg class="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </span>
+                        <span>My profile</span>
+                    </a>
+                </li>
 
-            <li>
-                <a href="#"
-                    class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 @if(Request::path() === 'teacher/settings') bg-gray-200 font-bold @else focus:bg-gray-200 @endif focus:shadow-outline">
-                    <span class="text-gray-600">
-                        <svg class="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4">
-                            </path>
-                        </svg>
-                    </span>
-                    <span>Settings</span>
-                </a>
-            </li>
+                <li>
+                    <a href="#"
+                        class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 @if(Request::path() === 'teacher/settings') bg-gray-200 font-bold @else focus:bg-gray-200 @endif focus:shadow-outline">
+                        <span class="text-gray-600">
+                            <svg class="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4">
+                                </path>
+                            </svg>
+                        </span>
+                        <span>Settings</span>
+                    </a>
+                </li>
 
-            <li>
-                <a href="#"
-                    class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 @if(Request::path() === 'teacher/change-password') bg-gray-200 font-bold @else focus:bg-gray-200 @endif focus:shadow-outline">
-                    <span class="text-gray-600">
-                        <svg class="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                        </svg>
-                    </span>
-                    <span>Change password</span>
-                </a>
-            </li>
+                <li>
+                    <a href="#"
+                        class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 @if(Request::path() === 'teacher/change-password') bg-gray-200 font-bold @else focus:bg-gray-200 @endif focus:shadow-outline">
+                        <span class="text-gray-600">
+                            <svg class="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        </span>
+                        <span>Change password</span>
+                    </a>
+                </li>
+            </ul>
         </div>
 
 
