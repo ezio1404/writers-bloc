@@ -20,9 +20,27 @@ class Lesson extends Model implements HasMedia
     protected $fillable = [
         'title',
         'discussion',
+        'summary',
+        'youtube_url',
         'publish_date',
         'due_date',
     ];
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at','publish_date','due_date'];
+
+
+    public function quizzes()
+    {
+        return $this->hasMany(Quiz::class);
+    }
+
+    public function quiz()
+    {
+        return $this->hasOne(Quiz::class);
+    }
+
+    public function writingTask()
+    {
+        return $this->hasMany(WritingTask::class);
+    }
 }

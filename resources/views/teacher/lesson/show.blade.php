@@ -1,5 +1,50 @@
 @extends('layouts.teacher')
 
+@section('style')
+<style>
+    body {
+        font-family: Arial;
+    }
+
+    /* Style the tab */
+    .tab {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+    }
+
+    /* Style the buttons inside the tab */
+    .tab a {
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+        font-size: 17px;
+    }
+
+    /* Change background color of as on hover */
+    .tab a:hover {
+        background-color: #ddd;
+    }
+
+    /* Create an active/current tablink class */
+    .tab a.active {
+        background-color: #ccc;
+    }
+
+    /* Style the tab content */
+    .tabcontent {
+        display: none;
+        padding: 6px 12px;
+
+
+    }
+</style>
+@endsection
+
 @section('content')
 <nav class="text-black" aria-label="Breadcrumb">
     <ol class="list-none p-0 inline-flex">
@@ -13,15 +58,20 @@
     </ol>
 </nav>
 
-<nav class="my-5" aria-label="tab nav">
-    <ol class="list-none p-0 flex justify-around text-center">
-        <li class="p-4 bg-red-100 w-full">Discussion</li>
-        <li class="p-4 bg-green-100 w-full">Quiz</li>
-        <li class="p-4 bg-blue-100 w-full">Writing Task</li>
-    </ol>
+<nav class="tab flex mt-8 text-center">
+    <a href="{{ route('teacher-lesson-show',$lesson->id)}}"
+        class="tablinks w-full @if(Route::currentRouteName() == 'teacher-lesson-show') active @endif">Discussion</a>
+    <a href="{{route('teacher-quiz',$lesson->id)}}"
+        class="tablinks w-full @if(Route::currentRouteName() == 'teacher-quiz') active @endif">Quiz</a>
+    <a href="{{route('teacher-writing',$lesson->id)}}"
+        class="tablinks w-full @if(Route::currentRouteName() == 'teacher-writing-show') active @endif">Writing
+        Task</a>
 </nav>
 
-<div class="mt-16">
+
+
+
+<div class="mt-8">
     <form action={{ route('teacher-lesson-put', $lesson->id)}} method="POST" enctype="multipart/form-data">
         @csrf
         @method('put')
@@ -67,21 +117,49 @@
                 </label>
             </div>
 
-            <div class="mx-auto block">
-                <span class="text-gray-700 font-bold">Video Preview</span>
-                <video class="mt-1 mb-2" width="640" height="480" controls>
-                    <source src="{{ $lesson->getFirstMediaUrl() }}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-
             <label class="block">
-                <span class="text-gray-700 font-bold">Video</span>
-                <input type="file" name="lesson_video" id="lesson_video" class="filepond mt-1">
-                @error('lesson_video')
+                <span class="text-gray-700 font-bold">Youtube Url <span
+                        class="italic text-xs text-gray-400">optional</span></span>
+                <input type="text"
+                    class="mt-1 mb-2 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+                    placeholder="" name="youtube_url" value="{{ old('youtube_url') ?? $lesson->youtube_url }}">
+                @error('youtube_url')
                 <span class="text-red-500">{{ $message }}</span>
                 @enderror
             </label>
+
+            <div>
+                <h1 class="text-gray-700 font-bold mb-2">Video Preview</h1>
+                <div class="flex gap-4">
+                    <div class="w-full text-left text-lg pb-1">Main Media</div>
+                    <div class="w-full text-left text-lg pb-1">Youtube Media</div>
+                </div>
+                <div class="flex gap-4">
+                    <div class="w-full">
+                        <video class="" controls>
+                            <source src="{{ $lesson->getFirstMediaUrl() }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+
+                    <div class="w-full">
+                        <iframe class="w-full h-full" src="{{$lesson->youtube_embed_url}}" title="YouTube video player"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <label class="block">
+                <span class="text-gray-700 font-bold">Video</span>
+            </label>
+            <input type="file" name="lesson_video" id="lesson_video" class="filepond mt-1">
+            @error('lesson_video')
+            <span class="text-red-500">{{ $message }}</span>
+            @enderror
 
 
             <div class="block">
@@ -113,4 +191,4 @@
     });
 </script>
 
-@endsection()
+@endsection
