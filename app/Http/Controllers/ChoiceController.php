@@ -19,7 +19,7 @@ class ChoiceController extends Controller
             },
         ])->first();
 
-        return redirect()->route('teacher.choice.show', ['lesson' => $lesson]);
+        return view('teacher.choice.show', ['lesson' => $lesson]);
     }
 
 

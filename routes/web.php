@@ -30,18 +30,32 @@ Auth::routes();
 
 
 
-Route::group(['middleware' => ['role:student']], function () {
+Route::group(['middleware' => ['role:student', 'auth']], function () {
     Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('/lesson/{lessonId}', [\App\Http\Controllers\StudentLessonController::class, 'index'])->name('lesson-details');
-    // Route::get('/lesson/quiz/{lessonId}', [\App\Http\Controllers\::class, 'index'])->name('lesson-details');
-
+    Route::get('/settings', [\App\Http\Controllers\HomeController::class, 'settings'])->name('student-settings');
+    Route::post('/settings/update-password', [\App\Http\Controllers\UserSettingsContoller::class, 'updatePassword'])->name('student-update-password');
+    Route::prefix('lesson')->group(function () {
+        Route::get('/{lessonId}', [\App\Http\Controllers\StudentLessonController::class, 'index'])->name('lesson-details');
+        Route::prefix('quiz')->group(function () {
+            Route::get('/{lessonId}', [\App\Http\Controllers\LessonQuizController::class, 'index'])->name('lesson-quiz');
+            Route::post('/', [\App\Http\Controllers\LessonQuizController::class, 'store'])->name('lesson-quiz-store');
+        });
+        Route::prefix('writing-task')->group(function () {
+            Route::get('/{lessonId}', [\App\Http\Controllers\StudentWritingTaskController::class, 'index'])->name('lesson-writing-task');
+            Route::post('/', [\App\Http\Controllers\StudentWritingTaskController::class, 'store'])->name('lesson-writing-task-store');
+        });
+    });
 });
 
-Route::group(['middleware' => ['role:teacher']], function () {
+Route::group(['middleware' => ['role:teacher', 'auth']], function () {
     Route::prefix('teacher')->group(function () {
-        Route::get('/', [TeacherController::class, 'index'])->name('teacher-home');
+        Route::get('/', [TeacherController::class, 'dashboard'])->name('teacher-home');
         Route::post('/student/import', [TeacherController::class, 'import'])->name('import');
 
+        Route::prefix('student')->group(function () {
+            Route::get('/', [TeacherController::class, 'index'])->name('teacher-student');
+            Route::get('/{userId}', [TeacherController::class, 'show'])->name('teacher-show-student');
+        });
         // lesson
         Route::prefix('lesson')->group(function () {
             Route::get('/', [LessonController::class, 'index'])->name('teacher-lesson');

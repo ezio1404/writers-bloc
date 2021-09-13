@@ -2,7 +2,7 @@
 
 
 @section('content')
-<main class="sm:container sm:mx-auto sm:pt-20">
+<main class="sm:container sm:mx-auto pt-20">
     <div class="w-full sm:px-6">
 
         @if (session('status'))

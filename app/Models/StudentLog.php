@@ -4,11 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class WritingTask extends Model
+class StudentLog extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -16,19 +15,27 @@ class WritingTask extends Model
      * @var string[]
      */
     protected $fillable = [
+        'user_id',
         'lesson_id',
-        'task',
-        'points',
     ];
 
-    protected $dates = ['created_at', 'updated_at'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function lesson()
     {
         return $this->belongsTo(Lesson::class);
     }
 
-    public function studentWritingTask()
+    public function studentQuizAnswer()
+    {
+        return $this->hasMany(StudentQuizAnswer::class);
+    }
+
+    public function studentWritingTaskAnswer()
     {
         return $this->hasMany(StudentWritingTask::class);
     }

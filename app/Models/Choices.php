@@ -28,4 +28,9 @@ class Choices extends Model
     {
         return $this->belongsTo(Quiz::class);
     }
+
+    public function studentAnswerQuiz()
+    {
+        return $this->hasMany(StudentQuizAnswer::class);
+    }
 }
