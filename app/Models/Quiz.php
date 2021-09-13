@@ -36,5 +36,9 @@ class Quiz extends Model
         return $this->hasMany(Choices::class);
     }
 
+    public function studentQuizAnswer()
+    {
+        return $this->hasMany(StudentQuizAnswer::class);
+    }
 
 }

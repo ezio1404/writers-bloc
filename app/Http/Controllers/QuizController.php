@@ -120,6 +120,6 @@ class QuizController extends Controller
         $quiz->update($validatedData);
 
         Alert::toast('Updated Quiz Details', 'success');
-        return redirect()->route('teacher-quiz', $request->lesson_id);
+        return redirect()->back();
     }
 }

@@ -36,6 +36,9 @@ class LoginController extends Controller
         if (auth()->user()->hasRole('teacher')) {
             return RouteServiceProvider::TEACHER_HOME;
         }
+        if (!auth()->user()->is_password_set) {
+            return RouteServiceProvider::SETTINGS;
+        }
         return RouteServiceProvider::HOME;
     }
     /**
@@ -47,5 +50,4 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
-
 }

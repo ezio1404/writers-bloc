@@ -81,6 +81,6 @@ class WritingController extends Controller
         $quiz->update($validatedData);
 
         Alert::toast('Updated Writing Task Details', 'success');
-        return redirect()->route('teacher-writing', $request->lesson_id);
+        return redirect()->back();
     }
 }

@@ -107,9 +107,7 @@ class LessonController extends Controller
         $lesson->refresh();
 
         Alert::toast('Updated lesson', 'success');
-        return redirect()->route('teacher.lesson.show', [
-            'lesson' => $lesson
-        ]);
+        return redirect()->back();
     }
 
     public function destroy($id)

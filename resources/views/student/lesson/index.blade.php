@@ -10,7 +10,7 @@
 
 
 @section('content')
-<main class="sm:container sm:mx-auto sm:pt-20">
+<main class="sm:container sm:mx-auto pt-20">
     <div class="w-full sm:px-6">
 
         @if (session('status'))
@@ -38,34 +38,50 @@
 
                 <div class="text-center mx-auto  lg:px-60">
                     <div x-show="activeTab===0" class="w-full">
-                        <video class="" controls>
-                            <source src="{{ $lesson->getFirstMediaUrl() }}" type="video/mp4">
+                        <video id="myVideo" class="w-full" controls>
+                            <source src="{{ $lesson->getFirstMediaUrl() }}">
                             Your browser does not support the video tag.
                         </video>
                     </div>
                     <div x-show="activeTab===1">
-                        <div class="w-full h-full">
-                            <iframe class="w-full h-full responsive" src="{{$lesson->youtube_embed_url}}"
-                                title="YouTube video player" frameborder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowfullscreen></iframe>
-                        </div>
+                        <div class="w-full h-full responsive" id="player"></div>
                     </div>
 
                 </div>
             </div>
 
             <div class="lg:py-16 container mx-auto">
-                <div class="lg:px-10 my-4 py-6 bg-white rounded-lg px-4 ">
+                <div class="lg:px-10 my-4 py-6 bg-white px-4 ">
                     <div class="flex justify-between items-center">
                         <span class="font-light text-gray-600">
                             {{ $lesson->publish_date->toFormattedDateString()}}</span>
                     </div>
                     <div class="mt-2">
                         <h1 class="text-2xl text-gray-700 font-bold hover:text-gray-600">{{ $lesson->title }}</h1>
-                        <p class="whitespace-pre-line mt-2 text-gray-600">{{ $lesson->discussion }}</p>
+                        <p class="whitespace-pre-line mt-2 text-gray-600 leading-normal">{{ $lesson->discussion }}</p>
                     </div>
-
+                </div>
+                <div class="lg:px-10 my-4 py-6 bg-white px-4 flex flex-col lg:flex-row gap-4">
+                    <a id="takeQuiz"
+                        class="bg-blue-500 block lg:w-1/2 w-full text-white font-bold py-4 px-4 rounded opacity-50 cursor-not-allowed text-center uppercase">
+                        @if (!$studentLog)
+                        Take Quiz
+                        @endif
+                        @if($studentLog && $studentLog->studentQuizAnswer)
+                        Quiz Completed
+                        @endif
+                        <a @if($studentLog && $studentLog->studentWritingTaskAnswer->isEmpty())
+                            href="{{ route('lesson-writing-task',$lesson->id) }}"
+                            @endif
+                            class="bg-blue-500 block lg:w-1/2 w-full text-white font-bold py-4 px-4 rounded
+                            @if($studentLog && $studentLog->studentWritingTaskAnswer->isEmpty()) cursor-pointer @else
+                            opacity-50 cursor-not-allowed @endif text-center uppercase">
+                            @if(!$studentLog || ($studentLog && $studentLog->studentWritingTaskAnswer->isEmpty()))
+                            Take Writing Task
+                            @else
+                            Writing Task Completed
+                            @endif
+                        </a>
                 </div>
             </div>
 
@@ -76,7 +92,7 @@
 @endsection
 
 @section('scripts')
-
+<script src="http://www.youtube.com/player_api"></script>
 <script>
     function setup() {
         return {
@@ -87,5 +103,46 @@
             ]
         };
     };
+
+    const video = document.getElementById("myVideo");
+    let takeQuizNode = document.querySelector('#takeQuiz')
+    let att = document.createAttribute("href"); // Create a "href" attribute
+
+    video.onended = function () {
+        // change css button
+        // Set the value of the href attribute
+        if('{{ $studentLog && $studentLog->studentQuizAnswer }}'){
+            return;
+        }
+        att.value = '{{ route('lesson-quiz',$lesson->id) }}';
+        takeQuizNode.setAttributeNode(att);
+        takeQuizNode.style.opacity = "1";
+        takeQuizNode.style.cursor = "pointer";
+    };
+
+    var player = document.querySelector('#player');
+    // create youtube player
+    function onYouTubePlayerAPIReady() {
+        player = new YT.Player('player', {
+            videoId: '{{ $lesson->youtube_watch_id }}',
+            events: {
+                onStateChange: onPlayerStateChange
+            }
+        });
+    }
+
+    // when video ends
+    function onPlayerStateChange(event) {
+        if('{{ $studentLog && $studentLog->studentQuizAnswer }}'){
+            return;
+        }
+        if (event.data === 0) {
+            att.value = '{{ route('lesson-quiz',$lesson->id) }}';
+            takeQuizNode.setAttributeNode(att);
+            takeQuizNode.style.opacity = "1";
+            takeQuizNode.style.cursor = "pointer";
+        }
+    }
+
 </script>
 @endsection

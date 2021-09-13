@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_password_set',
     ];
 
     /**
@@ -44,5 +45,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-
+    public function studentLogs()
+    {
+      return $this->hasMany(StudentLog::class);
+    }
 }

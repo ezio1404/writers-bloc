@@ -43,4 +43,9 @@ class Lesson extends Model implements HasMedia
     {
         return $this->hasMany(WritingTask::class);
     }
+
+    public function logs()
+    {
+        return $this->hasMany(StudentLog::class);
+    }
 }
