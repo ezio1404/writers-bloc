@@ -11,8 +11,9 @@
 </nav>
 
 <div class="mt-16">
-    <details @if(!$students) open @endif>
-        <summary class="text-2xl font-bold text-black">Import Students <span class="text-red-500 italic text-sm">Student must not have duplicated id and email</span></summary>
+    <details @if($students->isEmpty()) open @endif>
+        <summary class="text-2xl font-bold text-black cursor-pointer">Import Students <span
+                class="text-red-500 italic text-sm">Student must not have duplicated id and email</span></summary>
         <form method="POST" action="{{ route('import')}}" enctype="multipart/form-data">
             @csrf
             <div class="grid grid-cols-1 gap-6">
@@ -36,7 +37,7 @@
                 </div>
             </div>
         </form>
-      </details>
+    </details>
 
     <div class="mt-10">
         <div class="flex flex-col">
@@ -91,7 +92,9 @@
                                                 $studentLogs->studentQuizAnswer->isEmpty() ||
                                                 $studentLogs->studentWritingTaskAnswer->isEmpty()
                                                 ])>
-                                                {{ $studentLogs->lesson->title }}
+                                                <a
+                                                    href="{{ route('teacher-show-student-lesson',['userId' =>  $student->id, 'lessonId' => $studentLogs->lesson->id]) }}">
+                                                    {{ $studentLogs->lesson->title }}</a>
                                             </div>
                                             @endforeach
                                         </div>

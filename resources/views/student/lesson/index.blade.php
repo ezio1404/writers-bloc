@@ -65,7 +65,7 @@
                     <a id="takeQuiz"
                         class="bg-blue-500 block lg:w-1/2 w-full text-white font-bold py-4 px-4 rounded opacity-50 cursor-not-allowed text-center uppercase">
                         @if (!$studentLog)
-                        Take Quiz
+                        Take Quiz <span class="block text-xs italic"> Watch the whole video to unlock</span>
                         @endif
                         @if($studentLog && $studentLog->studentQuizAnswer)
                         Quiz Completed
@@ -77,7 +77,7 @@
                             @if($studentLog && $studentLog->studentWritingTaskAnswer->isEmpty()) cursor-pointer @else
                             opacity-50 cursor-not-allowed @endif text-center uppercase">
                             @if(!$studentLog || ($studentLog && $studentLog->studentWritingTaskAnswer->isEmpty()))
-                            Take Writing Task
+                            Take Writing Task <span class="block text-xs italic"> Take Quiz to unlock</span>
                             @else
                             Writing Task Completed
                             @endif

@@ -15,7 +15,8 @@ class CreateQuizzesTable extends Migration
     {
         Schema::create('quizzes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('lesson_id')->constrained();
+            $table->foreignId('lesson_id')->constrained()->onUpdate('cascade')
+              ->onDelete('cascade');
             $table->string('question');
             $table->string('type')->default('multiple_choice');
             $table->integer('points')->default(1);

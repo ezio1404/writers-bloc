@@ -11,8 +11,9 @@
 </nav>
 
 <div class="mt-16">
-    <details @if(!$students) open @endif>
-        <summary class="text-2xl font-bold text-black">Import Students <span class="text-red-500 italic text-sm">Student must not have duplicated id and email</span></summary>
+    <details @if($students->isEmpty()) open @endif>
+        <summary class="text-2xl font-bold text-black cursor-pointer">Import Students <span
+                class="text-red-500 italic text-sm">Student must not have duplicated id and email</span></summary>
         <form method="POST" action="{{ route('import')}}" enctype="multipart/form-data">
             @csrf
             <div class="grid grid-cols-1 gap-6">
@@ -36,7 +37,7 @@
                 </div>
             </div>
         </form>
-      </details>
+    </details>
 
     <div class="mt-10">
         <div class="flex flex-col">
@@ -63,9 +64,9 @@
                                         Lesson Taken (quiz and writing Task)
                                     </th>
                                     <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Grade Student
-                                </th>
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Grade Student
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
@@ -85,7 +86,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap ">
                                         <div class="text-sm text-gray-900">
                                             @foreach ($student->studentLogs as $studentLogs )
-                                            <div for=""
+                                            <div
                                                 @class([ 'px-2 inline-block text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800'=>
                                                 !$studentLogs->studentQuizAnswer->isEmpty() &&
                                                 !$studentLogs->studentWritingTaskAnswer->isEmpty(),
@@ -94,7 +95,9 @@
                                                 $studentLogs->studentQuizAnswer->isEmpty() ||
                                                 $studentLogs->studentWritingTaskAnswer->isEmpty()
                                                 ])>
-                                                {{ $studentLogs->lesson->title }}
+                                                <a
+                                                    href="{{ route('teacher-show-student-lesson',['userId' =>  $student->id, 'lessonId' => $studentLogs->lesson->id]) }}">
+                                                    {{ $studentLogs->lesson->title }}</a>
                                             </div>
                                             @endforeach
                                         </div>

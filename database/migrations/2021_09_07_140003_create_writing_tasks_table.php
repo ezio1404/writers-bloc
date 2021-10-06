@@ -15,7 +15,8 @@ class CreateWritingTasksTable extends Migration
     {
         Schema::create('writing_tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('lesson_id')->constrained();
+            $table->foreignId('lesson_id')->constrained()->onUpdate('cascade')
+              ->onDelete('cascade');
             $table->text('task');
             $table->integer('points');
             $table->softDeletes();

@@ -71,36 +71,34 @@
                                         <div class="text-sm text-gray-900"> {{$lesson->writing_task_count}}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        @if ($lesson->publish_date)
-                                        <span
-                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                            Published
-                                        </span>
-                                        @endif
-                                        @if ($lesson->due_date <= now()) <span
-                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                            Due
-                                            </span>
-                                            @endif
-                                            @if ($lesson->deleted_at)
+                                        @if (now() < $lesson->publish_date && !$lesson->deleted_at )
                                             <span
-                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                                Archived
+                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                Published
                                             </span>
                                             @endif
+                                            @if ($lesson->due_date <= now()) <span
+                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                                Due
+                                                </span>
+                                                @endif
+                                                @if ($lesson->deleted_at)
+                                                <span
+                                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                                    Archived
+                                                </span>
+                                                @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <div class="text-sm text-gray-900">
                                             {{$lesson->due_date->toFormattedDateString()}}
-                                            <span
-                                                class="text-gray-500 text-xs block mt-1">{{$lesson->publish_date->diffForHumans($lesson->due_date)}}</span>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex">
                                         <a href="{{ route('teacher-lesson-show',$lesson->id)}}"
                                             class="text-indigo-600 hover:text-indigo-900 bg-indigo-100 p-2 rounded mr-2"><i
                                                 class="far fa-edit"></i></a>
-
+                                                @if (!$lesson->deleted_at)
                                         <form action="{{ route('teacher-lesson-destroy',$lesson->id)}}" method="POST">
                                             @csrf
                                             @method('DELETE')
@@ -108,16 +106,17 @@
                                                 class="text-sm font-medium hover:text-red-900 text-red-500 bg-red-100  rounded p-2"
                                                 type="submit"><i class="far fa-trash"></i></button>
                                         </form>
-
+@endif
                                     </td>
                                 </tr>
                                 @empty
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap" colspan="7">
                                         <div class="text-large font-medium text-gray-900 text-center">
-                                            Lesson is empty, lets <a href={{route('teacher-lesson-create')}}  class="text-indigo-500">
-                                            add new Lesson
-                                        </a>
+                                            Lesson is empty, lets <a href={{route('teacher-lesson-create')}}
+                                                class="text-indigo-500">
+                                                add new Lesson
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>

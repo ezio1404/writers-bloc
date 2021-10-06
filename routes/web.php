@@ -6,6 +6,12 @@ use App\Http\Controllers\QuizController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\WritingController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LessonQuizController;
+use App\Http\Controllers\StudentLessonController;
+use App\Http\Controllers\StudentWritingTaskController;
+use App\Http\Controllers\UserSettingsContoller;
+use App\Models\Lesson;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -23,7 +29,11 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    $lessons = Lesson::all();
+
+    return view('welcome', [
+        'lessons' => $lessons,
+    ]);
 });
 
 Auth::routes();
@@ -31,18 +41,18 @@ Auth::routes();
 
 
 Route::group(['middleware' => ['role:student', 'auth']], function () {
-    Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('/settings', [\App\Http\Controllers\HomeController::class, 'settings'])->name('student-settings');
-    Route::post('/settings/update-password', [\App\Http\Controllers\UserSettingsContoller::class, 'updatePassword'])->name('student-update-password');
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/settings', [HomeController::class, 'settings'])->name('student-settings');
+    Route::post('/settings/update-password', [UserSettingsContoller::class, 'updatePassword'])->name('student-update-password');
     Route::prefix('lesson')->group(function () {
-        Route::get('/{lessonId}', [\App\Http\Controllers\StudentLessonController::class, 'index'])->name('lesson-details');
+        Route::get('/{lessonId}', [StudentLessonController::class, 'index'])->name('lesson-details');
         Route::prefix('quiz')->group(function () {
-            Route::get('/{lessonId}', [\App\Http\Controllers\LessonQuizController::class, 'index'])->name('lesson-quiz');
-            Route::post('/', [\App\Http\Controllers\LessonQuizController::class, 'store'])->name('lesson-quiz-store');
+            Route::get('/{lessonId}', [LessonQuizController::class, 'index'])->name('lesson-quiz');
+            Route::post('/', [LessonQuizController::class, 'store'])->name('lesson-quiz-store');
         });
         Route::prefix('writing-task')->group(function () {
-            Route::get('/{lessonId}', [\App\Http\Controllers\StudentWritingTaskController::class, 'index'])->name('lesson-writing-task');
-            Route::post('/', [\App\Http\Controllers\StudentWritingTaskController::class, 'store'])->name('lesson-writing-task-store');
+            Route::get('/{lessonId}', [StudentWritingTaskController::class, 'index'])->name('lesson-writing-task');
+            Route::post('/', [StudentWritingTaskController::class, 'store'])->name('lesson-writing-task-store');
         });
     });
 });
@@ -55,6 +65,12 @@ Route::group(['middleware' => ['role:teacher', 'auth']], function () {
         Route::prefix('student')->group(function () {
             Route::get('/', [TeacherController::class, 'index'])->name('teacher-student');
             Route::get('/{userId}', [TeacherController::class, 'show'])->name('teacher-show-student');
+            Route::get('/{userId}/{lessonId}/answer', [TeacherController::class, 'studentLesson'])->name('teacher-show-student-lesson');
+            Route::get('/{studentLogId}/{quizId}', [TeacherController::class, 'gradeQuizShow'])->name('teacher-grade-quiz');
+            Route::put('/{studentLogId}/{quizId}', [TeacherController::class, 'gradeQuizPut'])->name('teacher-grade-quiz-put');
+            Route::get('/{studentLogId}/writing-task/{writingTaskId}', [TeacherController::class, 'gradeWritingTaskShow'])->name('teacher-grade-writing-task');
+            Route::put('/{studentLogId}/writing-task/{writingTaskId}', [TeacherController::class, 'gradeWritingTaskPut'])->name('teacher-grade-writing-task-put');
+
         });
         // lesson
         Route::prefix('lesson')->group(function () {

@@ -18,4 +18,14 @@ class StudentLesson extends Model
         'answer',
         'points',
     ];
+
+    public function studentLog()
+    {
+        return $this->belongsTo(StudentLog::class);
+    }
+
+    public function quiz()
+    {
+        return $this->belongsTo(Quiz::class)->withTrashed();
+    }
 }

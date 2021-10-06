@@ -16,8 +16,10 @@ class CreateStudentQuizAnswersTable extends Migration
         Schema::create('student_lessons', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('student_log_id');
-            $table->foreignId('quiz_id')->constrained();
-            $table->foreignId('choice_id')->nullable()->constrained();
+            $table->foreignId('quiz_id')->constrained()->onUpdate('cascade')
+              ->onDelete('cascade');
+            $table->foreignId('choice_id')->nullable()->constrained()->onUpdate('cascade')
+              ->onDelete('cascade');
             $table->text('answer');
             $table->integer('points')->nullable();
             $table->timestamps();
