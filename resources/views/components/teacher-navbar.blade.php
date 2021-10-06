@@ -1,9 +1,10 @@
 <div class="w-3/12 bg-white rounded p-3 shadow-lg fixed h-full">
     <div class="flex items-center space-x-4 p-2 mb-5">
-        <img class="h-12 rounded-full"
-            src="http://www.gravatar.com/avatar/2acfb745ecf9d4dccb3364752d17f65f?s=260&d=mp" alt="James Bhatta">
+        {{-- <img class="h-12 rounded-full"
+            src="http://www.gravatar.com/avatar/2acfb745ecf9d4dccb3364752d17f65f?s=260&d=mp" alt="James Bhatta"> --}}
         <div>
-            <h4 class="font-semibold text-lg text-gray-700 capitalize font-poppins tracking-wide">{{ Auth::user()->name}}</h4>
+            <h4 class="font-semibold text-lg text-gray-700 capitalize font-poppins tracking-wide">
+                {{ Auth::user()->name}}</h4>
         </div>
     </div>
     <ul class="space-y-2 text-sm">
@@ -49,7 +50,7 @@
                 <span> {{ __('Students') }}</span>
             </a>
         </li>
-        <div class="border border-red-500">
+        {{-- <div class="border border-red-500">
             <ul>
                 <li class="text-red-500 font-bold">
                     backlog:
@@ -98,11 +99,11 @@
                     </a>
                 </li>
             </ul>
-        </div>
-
+            </div>
+    --}}
 
         <li>
-            <a  href="{{ route('logout') }}" onclick="event.preventDefault();
+            <a href="{{ route('logout') }}" onclick="event.preventDefault();
             document.getElementById('logout-form').submit();"
                 class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 focus:bg-gray-200 focus:shadow-outline">
                 <span class="text-gray-600">
@@ -115,9 +116,9 @@
                 <span>{{ __('Logout') }}</span>
             </a>
 
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
-            {{ csrf_field() }}
-        </form>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                {{ csrf_field() }}
+            </form>
         </li>
     </ul>
 </div>

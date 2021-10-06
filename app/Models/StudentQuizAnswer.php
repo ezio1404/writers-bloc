@@ -26,11 +26,11 @@ class StudentQuizAnswer extends Model
 
     public function quiz()
     {
-        return $this->belongsTo(Quiz::class);
+        return $this->belongsTo(Quiz::class)->withTrashed();
     }
 
     public function choice()
     {
-        return $this->belongsTo(Choices::class);
+        return $this->belongsTo(Choices::class)->withTrashed();
     }
 }

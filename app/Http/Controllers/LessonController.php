@@ -16,7 +16,7 @@ class LessonController extends Controller
 {
     public function index()
     {
-        $lessons = Lesson::withCount(['quiz', 'writingTask'])->get();
+        $lessons = Lesson::withCount(['quiz', 'writingTask'])->withTrashed()->get();
 
         return view('teacher.lesson.index', [
             'lessons' => $lessons
@@ -67,8 +67,7 @@ class LessonController extends Controller
 
     public function show($id)
     {
-        $lesson = Lesson::findOrFail($id);
-
+        $lesson = Lesson::whereId($id)->withTrashed()->first();
         $pattern = '/(https:\/\/www\.youtube\.com\/watch\?v=)|(\&ab_channel=?\w*)/i';
         $youtube_watch_id = preg_replace($pattern, '', $lesson->youtube_url);
         $lesson->youtube_embed_url = "https://www.youtube.com/embed/{$youtube_watch_id}";
@@ -91,7 +90,7 @@ class LessonController extends Controller
 
         $validatedData['summary'] = substr($request->discussion, 0, 300);
 
-        $lesson = Lesson::find($id);
+        $lesson = Lesson::whereId($id)->withTrashed()->first();
         $mediaItems = $lesson->getMedia();
         $lessonUpdate = $lesson->update($validatedData);
 
@@ -112,7 +111,7 @@ class LessonController extends Controller
 
     public function destroy($id)
     {
-        $lesson = Lesson::find($id);
+        $lesson = Lesson::whereId($id)->withTrashed()->first();
         $lesson->delete();
 
         Alert::toast('Removed lesson', 'success');

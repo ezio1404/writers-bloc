@@ -16,7 +16,7 @@ class QuizController extends Controller
     {
         $lesson = Lesson::whereId($lessonId)->with([
             'quizzes.choices'
-        ])->first();
+        ])->withTrashed()->first();
 
         return view('teacher.quiz.index', [
             "lesson" => $lesson,
@@ -25,7 +25,7 @@ class QuizController extends Controller
 
     public function create($lessonId)
     {
-        $lesson = Lesson::findOrFail($lessonId);
+        $lesson = Lesson::whereId($lessonId)->withTrashed()->first();
         return view('teacher.quiz.create', [
             "lesson" => $lesson
         ]);
@@ -37,7 +37,7 @@ class QuizController extends Controller
             'quiz' => function ($q) use ($quizId) {
                 return $q->whereId($quizId)->with('choices');
             },
-        ])->first();
+        ])->withTrashed()->first();
 
         return view('teacher.quiz.show', [
             "lesson" => $lesson
@@ -66,7 +66,7 @@ class QuizController extends Controller
 
         try {
             DB::beginTransaction();
-            $lesson = Lesson::findOrFail($lessonId);
+            $lesson = Lesson::whereId($lessonId)->withTrashed()->first();
 
             if ($request->type == 'multiple_choice') {
                 $quiz = Quiz::create([

@@ -28,6 +28,6 @@ class StudentWritingTask extends Model
 
     public function writingTask()
     {
-        return $this->belongsTo(WritingTask::class);
+        return $this->belongsTo(WritingTask::class)->withTrashed();
     }
 }

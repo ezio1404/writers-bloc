@@ -16,7 +16,8 @@ class CreateStudentWritingTasksTable extends Migration
         Schema::create('student_writing_tasks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('student_log_id');
-            $table->foreignId('writing_task_id')->constrained();
+            $table->foreignId('writing_task_id')->constrained()->onUpdate('cascade')
+              ->onDelete('cascade');
             $table->text('task_answer');
             $table->integer('points')->nullable();
             $table->timestamps();

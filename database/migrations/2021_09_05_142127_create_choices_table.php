@@ -15,7 +15,8 @@ class CreateChoicesTable extends Migration
     {
         Schema::create('choices', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('quiz_id')->constrained();
+            $table->foreignId('quiz_id')->constrained()->onUpdate('cascade')
+              ->onDelete('cascade');
             $table->string('choice')->nullable();
             $table->boolean('is_correct_choice')->default(false);
             $table->softDeletes();

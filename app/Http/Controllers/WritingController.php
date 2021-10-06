@@ -13,14 +13,14 @@ class WritingController extends Controller
     {
         $lesson = Lesson::whereId($lessonId)->with([
             'writingTask'
-        ])->first();
+        ])->withTrashed()->first();
 
         return view('teacher.writing.index', ['lesson' => $lesson]);
     }
 
     public function create($lessonId)
     {
-        $lesson = Lesson::findOrFail($lessonId);
+        $lesson = Lesson::whereId($lessonId)->withTrashed()->first();
 
         return view('teacher.writing.create', [
             "lesson" => $lesson
@@ -34,7 +34,7 @@ class WritingController extends Controller
             'task' => ['required'],
         ]);
 
-        $lesson = Lesson::findOrFail($lessonId);
+        $lesson = Lesson::whereId($lessonId)->withTrashed()->first();
 
         WritingTask::create([
             'lesson_id' => $lesson->id,
@@ -62,7 +62,7 @@ class WritingController extends Controller
             'writingTask' => function ($q) use ($writingTaskId) {
                 return $q->whereId($writingTaskId);
             },
-        ])->first();
+        ])->withTrashed()->first();
 
 
         return view('teacher.writing.show', [

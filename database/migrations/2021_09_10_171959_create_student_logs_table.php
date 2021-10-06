@@ -15,8 +15,10 @@ class CreateStudentLogsTable extends Migration
     {
         Schema::create('student_logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('lesson_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onUpdate('cascade')
+              ->onDelete('cascade');
+            $table->foreignId('lesson_id')->constrained()->onUpdate('cascade')
+              ->onDelete('cascade');
             $table->timestamps();
         });
     }
