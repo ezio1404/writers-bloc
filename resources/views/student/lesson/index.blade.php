@@ -92,7 +92,7 @@
 @endsection
 
 @section('scripts')
-<script src="http://www.youtube.com/player_api"></script>
+<script src="https://www.youtube.com/player_api"></script>
 <script>
     function setup() {
         return {
