@@ -36,7 +36,6 @@ class LessonController extends Controller
             'publish_date' => ['required'],
             'youtube_url' => ['sometimes'],
             'due_date' => ['required', 'date_format:Y-m-d'],
-            'lesson_video' => ['required', 'max:40000'],
         ]);
         $validatedData['summary'] = substr($request->discussion, 0, 300);
 
@@ -44,14 +43,14 @@ class LessonController extends Controller
             DB::beginTransaction();
             $lesson = Lesson::create($validatedData);
 
-            $temporaryFile = TemporaryFile::where('folder', $request->lesson_video)->first();
+            // $temporaryFile = TemporaryFile::where('folder', $request->lesson_video)->first();
 
-            if ($temporaryFile) {
-                $lesson->addMedia(storage_path('app/public/videos/tmp/' . $request->lesson_video . '/' . $temporaryFile->filename))
-                    ->toMediaCollection();
-                rmdir(storage_path('app/public/videos/tmp/' . $request->lesson_video));
-                $temporaryFile->delete();
-            }
+            // if ($temporaryFile) {
+            //     $lesson->addMedia(storage_path('app/public/videos/tmp/' . $request->lesson_video . '/' . $temporaryFile->filename))
+            //         ->toMediaCollection();
+            //     rmdir(storage_path('app/public/videos/tmp/' . $request->lesson_video));
+            //     $temporaryFile->delete();
+            // }
 
             DB::commit();
             Alert::toast('Added new Lesson', 'success');
@@ -61,7 +60,8 @@ class LessonController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            return $e->getMessage();
+            Alert::toast('Something went wrong.', 'error');
+            return redirect()->route('teacher-lesson');
         }
     }
 
@@ -71,7 +71,7 @@ class LessonController extends Controller
 
         $pattern = '/(https:\/\/www\.youtube\.com\/watch\?v=)|(\&ab_channel=?\w*)/i';
         $youtube_watch_id = preg_replace($pattern, '', $lesson->youtube_url);
-        $lesson->youtube_embed_url = "https://www.youtube.com/embed/{$youtube_watch_id}";
+        $lesson->youtube_embed_url = "https://www.youtube.com/embed/{$youtube_watch_id}?rel=0";
 
         return view('teacher.lesson.show', [
             'lesson' => $lesson
@@ -86,24 +86,23 @@ class LessonController extends Controller
             'youtube_url' => ['sometimes'],
             'publish_date' => ['required'],
             'due_date' => ['required', 'after:publish_date'],
-            'lesson_video' => ['sometimes', 'max:40000'],
         ]);
 
         $validatedData['summary'] = substr($request->discussion, 0, 300);
 
         $lesson = Lesson::find($id);
-        $mediaItems = $lesson->getMedia();
+        // $mediaItems = $lesson->getMedia();
         $lessonUpdate = $lesson->update($validatedData);
 
-        $temporaryFile = TemporaryFile::where('folder', $request->lesson_video)->first();
+        // $temporaryFile = TemporaryFile::where('folder', $request->lesson_video)->first();
 
-        if ($temporaryFile && $lessonUpdate) {
-            $mediaItems[0]->delete();
-            $lesson->addMedia(storage_path('app/public/videos/tmp/' . $request->lesson_video . '/' . $temporaryFile->filename))
-                ->toMediaCollection();
-            rmdir(storage_path('app/public/videos/tmp/' . $request->lesson_video));
-            $temporaryFile->delete();
-        }
+        // if ($temporaryFile && $lessonUpdate) {
+        //     $mediaItems[0]->delete();
+        //     $lesson->addMedia(storage_path('app/public/videos/tmp/' . $request->lesson_video . '/' . $temporaryFile->filename))
+        //         ->toMediaCollection();
+        //     rmdir(storage_path('app/public/videos/tmp/' . $request->lesson_video));
+        //     $temporaryFile->delete();
+        // }
         $lesson->refresh();
 
         Alert::toast('Updated lesson', 'success');

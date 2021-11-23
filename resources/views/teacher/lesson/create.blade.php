@@ -72,14 +72,14 @@
                 <span class="text-red-500">{{ $message }}</span>
                 @enderror
             </label>
-
+{{--
             <label class="block">
                 <span class="text-gray-700 font-bold">Video<span class="text-red-500">*</span></span>
             </label>
             <input type="file" name="lesson_video" id="lesson_video" class="filepond mt-1">
             @error('lesson_video')
             <span class="text-red-500">{{ $message }}</span>
-            @enderror
+            @enderror --}}
 
 
         </div>

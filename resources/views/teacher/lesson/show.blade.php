@@ -131,18 +131,18 @@
             <div>
                 <h1 class="text-gray-700 font-bold mb-2">Video Preview</h1>
                 <div class="flex gap-4">
-                    <div class="w-full text-left text-lg pb-1">Main Media</div>
+                    {{-- <div class="w-full text-left text-lg pb-1">Main Media</div> --}}
                     <div class="w-full text-left text-lg pb-1">Youtube Media</div>
                 </div>
-                <div class="flex gap-4">
-                    <div class="w-full">
+                <div class="flex gap-4 ">
+                    {{-- <div class="w-full">
                         <video class="" controls>
                             <source src="{{ $lesson->getFirstMediaUrl() }}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                    </div>
+                    </div> --}}
 
-                    <div class="w-full">
+                    <div class="w-full h-96 px-20">
                         <iframe class="w-full h-full" src="{{$lesson->youtube_embed_url}}" title="YouTube video player"
                             frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -153,13 +153,13 @@
 
 
 
-            <label class="block">
+            {{-- <label class="block">
                 <span class="text-gray-700 font-bold">Video</span>
             </label>
             <input type="file" name="lesson_video" id="lesson_video" class="filepond mt-1">
             @error('lesson_video')
             <span class="text-red-500">{{ $message }}</span>
-            @enderror
+            @enderror --}}
 
 
             <div class="block">
