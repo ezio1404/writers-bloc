@@ -43,7 +43,7 @@
                             Your browser does not support the video tag.
                         </video>
                     </div> --}}
-                    <div x-show="activeTab===1">
+                    <div x-show="activeTab===0">
                         <div class="w-full h-full responsive" id="player"></div>
                     </div>
 
@@ -56,7 +56,7 @@
                         <span class="font-light text-gray-600">
                             {{ $lesson->publish_date->toFormattedDateString()}}</span>
                     </div>
-                    <p
+                    {{-- <p
                     @class([
                         'mt-2',
                         'p-2 inline-block text-normal leading-5 font-semibold rounded-full bg-green-100 text-green-800'=> $studentLog->student_quiz_answer_sum_points,
@@ -68,7 +68,7 @@
                         'p-2 inline-block text-normal leading-5 font-semibold rounded-full bg-green-100 text-green-800'=> $studentLog->student_writing_task_answer_sum_points,
                         'p-2 inline-block text-normal leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800'=> !$studentLog->student_writing_task_answer_sum_points,
                     ])>Writing Task points: {{$studentLog->student_writing_task_answer_sum_points ? $studentLog->student_writing_task_answer_sum_points : 'To Be Graded'  }}
-                    </p>
+                    </p> --}}
                     <div class="mt-2">
                         <h1 class="text-2xl text-gray-700 font-bold hover:text-gray-600">{{ $lesson->title }}</h1>
                         <p class="whitespace-pre-line mt-2 text-gray-600 leading-normal">{{ $lesson->discussion }}</p>
@@ -109,9 +109,9 @@
 <script>
     function setup() {
         return {
-            activeTab: 1,
+            activeTab: 0,
             tabs: [
-                "Main Media",
+                // "Main Media",
                 "Youtube Media",
             ]
         };
