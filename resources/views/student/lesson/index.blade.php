@@ -37,12 +37,12 @@
                 </ul>
 
                 <div class="text-center mx-auto  lg:px-60">
-                    <div x-show="activeTab===0" class="w-full">
+                    {{-- <div x-show="activeTab===0" class="w-full">
                         <video id="myVideo" class="w-full" controls>
                             <source src="{{ $lesson->getFirstMediaUrl() }}">
                             Your browser does not support the video tag.
                         </video>
-                    </div>
+                    </div> --}}
                     <div x-show="activeTab===1">
                         <div class="w-full h-full responsive" id="player"></div>
                     </div>
@@ -96,7 +96,7 @@
 <script>
     function setup() {
         return {
-            activeTab: 0,
+            activeTab: 1,
             tabs: [
                 "Main Media",
                 "Youtube Media",

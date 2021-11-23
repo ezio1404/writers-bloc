@@ -23,14 +23,17 @@ class StudentLessonController extends Controller
         ])->with([
             'studentQuizAnswer',
             'studentWritingTaskAnswer',
-        ])->first();
+        ])
+        ->withSum('studentQuizAnswer', 'points')
+        ->withSum('studentWritingTaskAnswer', 'points')
+        ->first();
 
 
         // return response()->json($studentLog);
 
         $pattern = '/(https:\/\/www\.youtube\.com\/watch\?v=)|(\&ab_channel=?\w*)/i';
         $youtube_watch_id = preg_replace($pattern, '', $lesson->youtube_url);
-        $lesson->youtube_embed_url = "https://www.youtube.com/embed/{$youtube_watch_id}";
+        $lesson->youtube_embed_url = "https://www.youtube.com/embed/{$youtube_watch_id}?rel=0";
         $lesson->youtube_watch_id = $youtube_watch_id;
 
         // return response()->json($studentLog);
