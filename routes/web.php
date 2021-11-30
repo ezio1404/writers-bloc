@@ -8,6 +8,7 @@ use App\Http\Controllers\UploadController;
 use App\Http\Controllers\WritingController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LessonQuizController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StudentLessonController;
 use App\Http\Controllers\StudentWritingTaskController;
 use App\Http\Controllers\UserSettingsContoller;
@@ -71,6 +72,12 @@ Route::group(['middleware' => ['role:teacher', 'auth']], function () {
             Route::get('/{studentLogId}/writing-task/{writingTaskId}', [TeacherController::class, 'gradeWritingTaskShow'])->name('teacher-grade-writing-task');
             Route::put('/{studentLogId}/writing-task/{writingTaskId}', [TeacherController::class, 'gradeWritingTaskPut'])->name('teacher-grade-writing-task-put');
 
+        });
+
+        // Report
+        Route::prefix('report')->group(function () {
+            Route::get('/', [ReportController::class, 'index'])->name('teacher-report');
+            Route::get('/students', [ReportController::class, 'getStudents'])->name('teacher-report-getStudents');
         });
         // lesson
         Route::prefix('lesson')->group(function () {
