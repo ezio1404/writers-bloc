@@ -10,6 +10,10 @@
     .dt-button{
         padding: 1rem;
         border: 1 gray solid;
+        margin: .1rem;
+        border-radius: 4px;
+        background: rgba(211,211,211,.7);
+
     }
     .dt-button:hover{
         background: rgba(211,211,211,.5);
