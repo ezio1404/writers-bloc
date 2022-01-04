@@ -21,10 +21,23 @@
                 <span>Dashboard</span>
             </a>
         </li>
-
+        <li>
+            <a href="{{ route('teacher-announcement') }}"
+                class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200  @if(in_array(Request::path() , ['teacher/announcement','teacher/announcement/create','teacher/announcement/'.basename(URL::current())])) bg-gray-200 font-bold @else focus:bg-gray-200 @endif  focus:shadow-outline">
+                <span class="text-gray-600">
+                    <svg class="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z">
+                        </path>
+                    </svg>
+                </span>
+                <span> {{ __('Announcements') }}</span>
+            </a>
+        </li>
         <li>
             <a href="{{ route('teacher-lesson')}}"
-                class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 @if(Request::path() === 'teacher/lesson') bg-gray-200 font-bold @else focus:bg-gray-200 @endif  focus:shadow-outline">
+                class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 @if(in_array(Request::path() , ['teacher/lesson','teacher/lesson/create','teacher/lesson/'.basename(URL::current())])) bg-gray-200 font-bold @else focus:bg-gray-200 @endif  focus:shadow-outline">
                 <span class="text-gray-600">
                     <svg class="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -57,7 +70,8 @@
                     <svg class="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                        </path>
                     </svg>
                 </span>
                 <span> {{ __('Reports') }}</span>
@@ -69,7 +83,7 @@
                     backlog:
                     my profile, settings, change password
                 </li>
-                <li >
+                <li>
                     <a href="#"
                         class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 @if(Request::path() === 'teacher/profile') bg-gray-200 font-bold @else focus:bg-gray-200 @endif focus:shadow-outline">
                         <span class="text-gray-600">
@@ -112,8 +126,8 @@
                     </a>
                 </li>
             </ul>
-            </div>
-    --}}
+        </div>
+        --}}
 
         <li>
             <a href="{{ route('logout') }}" onclick="event.preventDefault();

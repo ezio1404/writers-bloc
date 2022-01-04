@@ -66,7 +66,7 @@
 
                                 </h4>
                                 <h3 class="hidden md:block font-bold text-2xl text-gray-700">{{ $lesson->title }} </h3>
-                                <p class="py-2 text-gray-600 text-justify">{{ $lesson->summary}}</p>
+                                <p class="py-2 text-gray-600 text-justify">{{Str::words($lesson->discussion , 40, '  . . .')}}</p>
                                 <a class="absolute bottom-0 pb-4 flex items-baseline mt-3 text-blue-600 hover:text-blue-900 focus:text-blue-900"
                                     href={{ route('lesson-details',$lesson->id)}}>
                                     <span>Learn more</span>

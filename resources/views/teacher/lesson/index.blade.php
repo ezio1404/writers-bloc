@@ -62,7 +62,7 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap w-1/3">
-                                        <div class="text-sm text-gray-900"> {{$lesson->summary}}</div>
+                                        <div class="text-sm text-gray-900"> {{Str::words($lesson->discussion , 40, '  . . .')}}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap ">
                                         <div class="text-sm text-gray-900"> {{$lesson->quiz_count}}</div>

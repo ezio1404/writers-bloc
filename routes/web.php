@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\ChoiceController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\QuizController;
@@ -110,6 +111,15 @@ Route::group(['middleware' => ['role:teacher', 'auth']], function () {
             Route::get('{lessonId}/{writingTaskId}', [WritingController::class, 'show'])->name('teacher-writing-show');
             Route::put('/details/{writingTaskId}', [WritingController::class, 'put'])->name('teacher-writing-put');
             Route::delete('/{writingTaskId}', [WritingController::class, 'destroy'])->name('teacher-writing-destroy');
+        });
+
+        Route::prefix('announcement')->group(function () {
+            Route::get('/', [AnnouncementController::class, 'index'])->name('teacher-announcement');
+            Route::get('/create', [AnnouncementController::class, 'create'])->name('teacher-announcement-create');
+            Route::post('/', [AnnouncementController::class, 'store'])->name('teacher-announcement-store');
+            Route::get('/{id}', [AnnouncementController::class, 'show'])->name('teacher-announcement-show');
+            Route::put('/{id}', [AnnouncementController::class, 'put'])->name('teacher-announcement-put');
+            Route::delete('/{id}', [AnnouncementController::class, 'destroy'])->name('teacher-announcement-destroy');
         });
     });
 

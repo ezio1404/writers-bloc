@@ -89,7 +89,7 @@ class LessonController extends Controller
 
         $validatedData['summary'] = substr($request->discussion, 0, 300);
 
-        $lesson = Lesson::find($id);
+        $lesson = Lesson::withTrashed()->find($id);
         // $mediaItems = $lesson->getMedia();
         $lessonUpdate = $lesson->update($validatedData);
 
