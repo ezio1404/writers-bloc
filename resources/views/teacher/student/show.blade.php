@@ -55,7 +55,7 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap ">
-                                        <div class="text-sm text-gray-900"> {{$studentLog->lesson->discussion}}</div>
+                                        <div class="text-sm text-gray-900"> {{Str::words($studentLog->lesson->discussion , 40, '  . . .')}}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap ">
                                         <div class="text-sm text-gray-900">

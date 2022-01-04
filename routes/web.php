@@ -14,6 +14,7 @@ use App\Http\Controllers\StudentLessonController;
 use App\Http\Controllers\StudentWritingTaskController;
 use App\Http\Controllers\UserSettingsContoller;
 use App\Models\Lesson;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -29,20 +30,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-
-Route::get('/', function () {
-    $lessons = Lesson::all();
-
-    return view('welcome', [
-        'lessons' => $lessons,
-    ]);
-});
+Route::get('/', [HomeController::class, 'slash']);
 
 Auth::routes();
 
 
 
-Route::group(['middleware' => ['role:student', 'auth']], function () {
+Route::group(['middleware' => ['role:student|teacher', 'auth']], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/settings', [HomeController::class, 'settings'])->name('student-settings');
     Route::post('/settings/update-password', [UserSettingsContoller::class, 'updatePassword'])->name('student-update-password');
