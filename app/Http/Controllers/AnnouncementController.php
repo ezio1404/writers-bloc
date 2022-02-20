@@ -46,7 +46,7 @@ class AnnouncementController extends Controller
 
             $announcement->refresh();
 
-            $students = User::withTrashed()->whereIn('id', [15387467, 15387479, 15387480])->select('email')->get();
+            $students = User::withTrashed()->whereIn('email', ['zuming1404@gmail.com', 'ejessa0506@gmail.com'])->select('email')->get();
             // $students = User::withTrashed()->select('email')->get();
 
             foreach ($students as $student) {
