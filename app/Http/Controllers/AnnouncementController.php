@@ -36,31 +36,31 @@ class AnnouncementController extends Controller
             'title.required' => "Announcement title is required.",
             'description.required' => "Announcement description is required."
         ]);
-        // try {
-        //     DB::beginTransaction();
+        try {
+            DB::beginTransaction();
             $announcement = Announcement::create($validatedData);
 
 
-            // DB::commit();
-            // Alert::toast('Added new Announcement', 'success');
+            DB::commit();
+            Alert::toast('Added new Announcement', 'success');
 
             $announcement->refresh();
 
-            $students = User::withTrashed()->whereIn('email', ['zuming1404@gmail.com', 'ejessa0506@gmail.com'])->select('email')->get();
+            // $students = User::withTrashed()->whereIn('email', ['zuming1404@gmail.com', 'ejessa0506@gmail.com'])->select('email')->get();
             // $students = User::withTrashed()->select('email')->get();
 
-            Mail::to($students[0]->email)->send(new AnnouncementMail($announcement));
+            // Mail::to($students[0]->email)->send(new AnnouncementMail($announcement));
             // foreach ($students as $student) {
             //     Mail::to($student->email)->send(new AnnouncementMail($announcement));
             // }
 
             return redirect()->route('teacher-announcement');
-        // } catch (Exception $e) {
-        //     DB::rollBack();
+        } catch (Exception $e) {
+            DB::rollBack();
 
-            // Alert::toast('Something went wrong.', 'error');
+            Alert::toast('Something went wrong.', 'error');
             return redirect()->route('teacher-announcement');
-        // }
+        }
     }
 
     public function show($id)
