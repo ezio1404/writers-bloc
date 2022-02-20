@@ -36,13 +36,13 @@ class AnnouncementController extends Controller
             'title.required' => "Announcement title is required.",
             'description.required' => "Announcement description is required."
         ]);
-        try {
-            DB::beginTransaction();
+        // try {
+        //     DB::beginTransaction();
             $announcement = Announcement::create($validatedData);
 
 
-            DB::commit();
-            Alert::toast('Added new Announcement', 'success');
+            // DB::commit();
+            // Alert::toast('Added new Announcement', 'success');
 
             $announcement->refresh();
 
@@ -54,12 +54,12 @@ class AnnouncementController extends Controller
             }
 
             return redirect()->route('teacher-announcement');
-        } catch (Exception $e) {
-            DB::rollBack();
+        // } catch (Exception $e) {
+        //     DB::rollBack();
 
-            Alert::toast('Something went wrong.', 'error');
+            // Alert::toast('Something went wrong.', 'error');
             return redirect()->route('teacher-announcement');
-        }
+        // }
     }
 
     public function show($id)
