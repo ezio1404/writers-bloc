@@ -48,7 +48,7 @@ class StudentController extends Controller
             'email' => $validated['email'],
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
             'name' => $validated['lastname'] . ', ' . $validated['firstname'],
-        ]);
+        ])->assignRole('student');
 
         Alert::toast('Added new Student', 'success');
         return redirect()->back();
