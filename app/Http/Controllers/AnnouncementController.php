@@ -49,9 +49,10 @@ class AnnouncementController extends Controller
             $students = User::withTrashed()->whereIn('email', ['zuming1404@gmail.com', 'ejessa0506@gmail.com'])->select('email')->get();
             // $students = User::withTrashed()->select('email')->get();
 
-            foreach ($students as $student) {
-                Mail::to($student->email)->send(new AnnouncementMail($announcement));
-            }
+            Mail::to($students[0]->email)->send(new AnnouncementMail($announcement));
+            // foreach ($students as $student) {
+            //     Mail::to($student->email)->send(new AnnouncementMail($announcement));
+            // }
 
             return redirect()->route('teacher-announcement');
         // } catch (Exception $e) {
