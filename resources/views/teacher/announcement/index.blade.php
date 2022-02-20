@@ -50,16 +50,23 @@
                                         <div class="text-sm text-gray-900"> {{ Str::words($announcement->description, 50, '  . . .') }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex">
+                                        @if (!$announcement->deleted_at)
                                         <a href="{{ route('teacher-announcement-show',$announcement->id)}}"
                                             class="text-indigo-600 hover:text-indigo-900 bg-indigo-100 p-2 rounded mr-2"><i
                                                 class="far fa-edit"></i></a>
-                                        @if (!$announcement->deleted_at)
                                         <form action="{{ route('teacher-announcement-destroy',$announcement->id)}}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button
                                                 class="text-sm font-medium hover:text-red-900 text-red-500 bg-red-100  rounded p-2"
-                                                type="submit"><i class="far fa-trash"></i></button>
+                                                type="submit">Delete</button>
+                                        </form>
+                                        @else
+                                        <form action="{{ route('teacher-announcement-restore',$announcement->id)}}" method="POST">
+                                            @csrf
+                                            <button
+                                                class="text-sm font-medium hover:text-green-900 text-green-500 bg-green-100  rounded p-2"
+                                                type="submit">Restore</button>
                                         </form>
                                         @endif
                                     </td>

@@ -7,13 +7,16 @@ use App\Models\Lesson;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Mail\AnnouncementMail;
+use App\Models\User;
 
 class AnnouncementController extends Controller
 {
     public function index()
     {
-        $announcements = Announcement::all();
+        $announcements = Announcement::withTrashed()->get();
         return view('teacher.announcement.index', [
             'announcements' => $announcements
         ]);
@@ -29,11 +32,10 @@ class AnnouncementController extends Controller
         $validatedData = $request->validate([
             'title' => ['required', 'max:255'],
             'description' => ['required'],
-        ],[
+        ], [
             'title.required' => "Announcement title is required.",
             'description.required' => "Announcement description is required."
         ]);
-
         try {
             DB::beginTransaction();
             $announcement = Announcement::create($validatedData);
@@ -43,6 +45,14 @@ class AnnouncementController extends Controller
             Alert::toast('Added new Announcement', 'success');
 
             $announcement->refresh();
+
+            $students = User::withTrashed()->whereIn('id', [15387467, 15387479, 15387480])->select('email')->get();
+            // $students = User::withTrashed()->select('email')->get();
+
+            foreach ($students as $student) {
+                Mail::to($student->email)->send(new AnnouncementMail($announcement));
+            }
+
             return redirect()->route('teacher-announcement');
         } catch (Exception $e) {
             DB::rollBack();
@@ -66,7 +76,7 @@ class AnnouncementController extends Controller
         $validatedData = $request->validate([
             'title' => ['required', 'max:255'],
             'description' => ['required'],
-        ],[
+        ], [
             'title.required' => "Announcement title is required.",
             'description.required' => "Announcement description is required."
         ]);
@@ -89,4 +99,12 @@ class AnnouncementController extends Controller
         return redirect()->route('teacher-announcement');
     }
 
+    public function restore($id)
+    {
+        $announcement = Announcement::withTrashed()->whereId($id)->first();
+        $announcement->restore();
+
+        Alert::toast('Restored Announcement', 'success');
+        return redirect()->route('teacher-announcement');
+    }
 }

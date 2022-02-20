@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Announcement;
 use App\Models\Lesson;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -25,6 +26,28 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
+    {
+        $announcements = Announcement::all();
+
+        // return response()->json($lessons);
+        if (auth()->user()->hasRole('teacher')) {
+            $students = User::with([
+                'studentLogs' => function ($q) {
+                    return $q->with([
+                        'lesson',
+                        'studentQuizAnswer:id,student_log_id,points',
+                        'studentWritingTaskAnswer:id,student_log_id,points'
+                    ]);
+                },
+            ])->get()->except(1);
+
+            return view('teacher.index',  compact('students'));
+        }
+
+        return view('student.index', compact('announcements'));
+    }
+
+    public function lessons()
     {
         $lessons = Lesson::with([
             'logs' => function ($q) {
@@ -52,14 +75,10 @@ class HomeController extends Controller
                 },
             ])->get()->except(1);
 
-            return view('teacher.index', [
-                'students' => $students
-            ]);
+            return view('teacher.index', compact('students'));
         }
 
-        return view('student.index', [
-            'lessons' => $lessons,
-        ]);
+        return view('student.lessons', compact('lessons'));
     }
 
     public function settings()
@@ -98,14 +117,10 @@ class HomeController extends Controller
                 },
             ])->get()->except(1);
 
-            return view('teacher.index', [
-                'students' => $students
-            ]);
+            return view('teacher.index', compact('students'));
         }
-        $lessons = Lesson::all();
+        $announcements = Announcement::all();
 
-        return view('welcome', [
-            'lessons' => $lessons,
-        ]);
+        return view('welcome', compact('announcements'));
     }
 }

@@ -10,9 +10,12 @@ use App\Http\Controllers\WritingController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LessonQuizController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\StudentAnnouncementController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentLessonController;
 use App\Http\Controllers\StudentWritingTaskController;
 use App\Http\Controllers\UserSettingsContoller;
+use App\Mail\AnnouncementMail;
 use App\Models\Lesson;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +34,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [HomeController::class, 'slash']);
+Route::get('/announcementMail',function(){
+    return new AnnouncementMail();
+});
 
 Auth::routes();
 
@@ -38,6 +44,7 @@ Auth::routes();
 
 Route::group(['middleware' => ['role:student|teacher', 'auth']], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/lessons', [HomeController::class, 'lessons'])->name('lessons');
     Route::get('/settings', [HomeController::class, 'settings'])->name('student-settings');
     Route::post('/settings/update-password', [UserSettingsContoller::class, 'updatePassword'])->name('student-update-password');
     Route::prefix('lesson')->group(function () {
@@ -51,6 +58,9 @@ Route::group(['middleware' => ['role:student|teacher', 'auth']], function () {
             Route::post('/', [StudentWritingTaskController::class, 'store'])->name('lesson-writing-task-store');
         });
     });
+    Route::prefix('announcement')->group(function () {
+        Route::get('/{announcement}', [StudentAnnouncementController::class, 'show'])->name('announcement-student-show');
+    });
 });
 
 Route::group(['middleware' => ['role:teacher', 'auth']], function () {
@@ -60,13 +70,18 @@ Route::group(['middleware' => ['role:teacher', 'auth']], function () {
 
         Route::prefix('student')->group(function () {
             Route::get('/', [TeacherController::class, 'index'])->name('teacher-student');
+            Route::get('/create', [StudentController::class, 'create'])->name('teacher-student-create');
+            Route::post('/saveStudent', [StudentController::class, 'store'])->name('teacher-student-store');
+            Route::get('/show/{user}', [StudentController::class, 'show'])->name('teacher-student-show');
+            Route::put('/update/{user}', [StudentController::class, 'update'])->name('teacher-student-update');
+            Route::delete('/destroy/{id}', [StudentController::class, 'destroy'])->name('teacher-student-destroy');
+            Route::post('/restore/{id}', [StudentController::class, 'restore'])->name('teacher-student-restore');
             Route::get('/{userId}', [TeacherController::class, 'show'])->name('teacher-show-student');
             Route::get('/{userId}/{lessonId}/answer', [TeacherController::class, 'studentLesson'])->name('teacher-show-student-lesson');
             Route::get('/{studentLogId}/{quizId}', [TeacherController::class, 'gradeQuizShow'])->name('teacher-grade-quiz');
             Route::put('/{studentLogId}/{quizId}', [TeacherController::class, 'gradeQuizPut'])->name('teacher-grade-quiz-put');
             Route::get('/{studentLogId}/writing-task/{writingTaskId}', [TeacherController::class, 'gradeWritingTaskShow'])->name('teacher-grade-writing-task');
             Route::put('/{studentLogId}/writing-task/{writingTaskId}', [TeacherController::class, 'gradeWritingTaskPut'])->name('teacher-grade-writing-task-put');
-
         });
 
         // Report
@@ -114,6 +129,7 @@ Route::group(['middleware' => ['role:teacher', 'auth']], function () {
             Route::get('/{id}', [AnnouncementController::class, 'show'])->name('teacher-announcement-show');
             Route::put('/{id}', [AnnouncementController::class, 'put'])->name('teacher-announcement-put');
             Route::delete('/{id}', [AnnouncementController::class, 'destroy'])->name('teacher-announcement-destroy');
+            Route::post('/restore/{id}', [AnnouncementController::class, 'restore'])->name('teacher-announcement-restore');
         });
     });
 

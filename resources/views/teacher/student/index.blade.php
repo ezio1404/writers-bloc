@@ -38,7 +38,12 @@
             </div>
         </form>
     </details>
-
+    <div class="my-10">
+        <a href="{{ route('teacher-student-create') }}"
+            class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+            Add Student
+        </a>
+    </div>
     <div class="mt-10">
         <div class="flex flex-col">
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -67,6 +72,10 @@
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Grade Student
                                     </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Action
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
@@ -87,15 +96,23 @@
                                         <div class="text-sm text-gray-900">
                                             @foreach ($student->studentLogs as $studentLogs )
                                             <div
-                                                @class([ 'px-2 inline-block text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800'=>
+                                             @class([ "px-2 inline-block text-xs leading-5 font-semibold rounded-full
+                                            bg-gray-100 text-gray-800"=> $student->deleted_at ,
+                                                'px-2 inline-block text-xs leading-5 font-semibold rounded-full
+                                                bg-green-100 text-green-800'=>
                                                 !$studentLogs->studentQuizAnswer->isEmpty() &&
-                                                !$studentLogs->studentWritingTaskAnswer->isEmpty(),
+                                                !$studentLogs->studentWritingTaskAnswer->isEmpty() &&
+                                                !$student->deleted_at ,
                                                 'px-2 inline-block text-xs leading-5 font-semibold rounded-full
                                                 bg-yellow-100 text-yellow-800' =>
                                                 $studentLogs->studentQuizAnswer->isEmpty() ||
-                                                $studentLogs->studentWritingTaskAnswer->isEmpty()
+                                                $studentLogs->studentWritingTaskAnswer->isEmpty() &&
+                                                !$student->deleted_at ,
                                                 ])>
                                                 <a
+                                                @class([
+                                                    'cursor-not-allowed' => $student->deleted_at,
+                                                ])
                                                     href="{{ route('teacher-show-student-lesson',['userId' =>  $student->id, 'lessonId' => $studentLogs->lesson->id]) }}">
                                                     {{ $studentLogs->lesson->title }}</a>
                                             </div>
@@ -103,9 +120,41 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex">
-                                        <a href="{{ route('teacher-show-student',$student->id)}}"
-                                            class="text-indigo-600 hover:text-indigo-900 bg-indigo-100 p-2 rounded mr-2"><i
-                                                class="far fa-edit"></i> Grade</a>
+                                        <a @if (!$student->deleted_at)
+                                            href="{{ route('teacher-show-student',$student->id)}}"
+                                            @endif
+                                            @class([
+                                            "p-2 rounded mr-2",
+                                            "text-indigo-600 hover:text-indigo-900 bg-indigo-100" =>
+                                            !$student->deleted_at ,
+                                            "text-gray-600 bg-gray-100" => $student->deleted_at ,
+                                            "cursor-not-allowed" => $student->deleted_at ,
+                                            ])
+                                            > Grade</a>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap ">
+                                        <div class="flex">
+                                            @if (!$student->deleted_at)
+                                            <a href="{{ route('teacher-student-show', $student)}}"
+                                                class="text-indigo-600 hover:text-indigo-900 bg-indigo-100 p-2 rounded mr-2">Edit</a>
+                                            <form action="{{ route('teacher-student-destroy', $student->id)}}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button
+                                                    class="text-sm font-medium hover:text-red-900 text-red-500 bg-red-100  rounded p-2"
+                                                    type="submit">Delete</button>
+                                            </form>
+                                            @else
+                                            <form action="{{ route('teacher-student-restore',  $student->id)}}"
+                                                method="POST">
+                                                @csrf
+                                                <button
+                                                    class="text-sm font-medium hover:text-green-900 text-green-500 bg-green-100  rounded p-2"
+                                                    type="submit">Restore</button>
+                                            </form>
+                                            @endif
+                                        </div>
                                     </td>
                                 </tr>
 

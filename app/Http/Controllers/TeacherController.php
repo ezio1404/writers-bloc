@@ -117,7 +117,7 @@ class TeacherController extends Controller
 
     public function index()
     {
-        $students = User::with([
+        $students = User::withTrashed()->with([
             'studentLogs' => function ($q) {
                 return $q->with([
                     'lesson' => function ($q) {
